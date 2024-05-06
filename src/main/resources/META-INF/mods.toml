@@ -1,0 +1,29 @@
+modLoader="javafml"
+loaderVersion="[46,)"
+license="LGPL"
+issueTrackerURL="https://github.com/Viola-Siemens/Redstone-Clock/issues"
+
+[[mods]]
+modId="redstoneclock"
+version="${file.jarVersion}"
+displayName="Redstone Clock"
+logoFile="logo.png"
+credits="Liu Dongyu, Blue_rose"
+authors="Hexagram"
+description='''
+A lightweight Minecraft mod that adds a simple redstone clock.
+'''
+
+[[dependencies.redstoneclock]]
+    modId="forge"
+    mandatory=true
+    versionRange="[46,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.redstoneclock]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.20,1.21)"
+    ordering="NONE"
+    side="BOTH"
