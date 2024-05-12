@@ -1,5 +1,7 @@
 {
   "language": "Chinese",
   "language.code": "zh_cn",
-  "language.region": "China"
+  "language.region": "China",
+
+  "block.redstoneclock.redstone_clock": "红石钟"
 }

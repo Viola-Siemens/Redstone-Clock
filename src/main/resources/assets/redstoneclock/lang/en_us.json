@@ -1,5 +1,7 @@
 {
   "language": "English",
   "language.code": "en_us",
-  "language.region": "United States"
+  "language.region": "United States",
+
+  "block.redstoneclock.redstone_clock": "Redstone Clock"
 }
