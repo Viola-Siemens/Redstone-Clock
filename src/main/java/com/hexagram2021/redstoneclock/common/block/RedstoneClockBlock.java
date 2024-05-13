@@ -78,7 +78,11 @@ public class RedstoneClockBlock extends BaseEntityBlock {
 
 	@Override
 	public int getSignal(BlockState blockState, BlockGetter level, BlockPos blockPos, Direction direction) {
-		return blockState.getValue(LIT) && blockState.getValue(FACING).getOpposite() == direction ? 15 : 0;
+		BlockEntity blockentity = level.getBlockEntity(blockPos);
+		if (blockentity instanceof RedstoneClockBlockEntity redstoneClockBlockEntity) {
+			return blockState.getValue(LIT) && blockState.getValue(FACING).getOpposite() == direction ? redstoneClockBlockEntity.getSignalStrength() : 0;
+		}
+		return super.getSignal(blockState, level, blockPos, direction);
 	}
 	@Override
 	public int getDirectSignal(BlockState blockState, BlockGetter level, BlockPos blockPos, Direction direction) {
