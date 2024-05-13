@@ -21,8 +21,8 @@ public final class RCBlocks {
 
 	public static final RegistryObject<RedstoneClockBlock> REDSTONE_CLOCK = REGISTER.register("redstone_clock", () -> new RedstoneClockBlock(
 			BlockBehaviour.Properties.of()
-					.lightLevel(blockState -> blockState.getValue(RedstoneClockBlock.POWERED) ? 7 : 0)
-					.sound(SoundType.METAL).pushReaction(PushReaction.DESTROY)
+					.lightLevel(blockState -> blockState.getValue(RedstoneClockBlock.LIT) ? 7 : 0)
+					.sound(SoundType.METAL).pushReaction(PushReaction.BLOCK)
 					.isValidSpawn((BlockState blockState, BlockGetter level, BlockPos blockPos, EntityType<?> entityType) -> false)
 	));
 

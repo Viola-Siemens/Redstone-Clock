@@ -117,7 +117,7 @@ public class RedstoneClockBlockEntity extends BlockEntity implements MenuProvide
 	}
 
 	public static void serverTick(Level level, BlockPos pos, BlockState blockState, RedstoneClockBlockEntity blockEntity) {
-		if(blockState.getValue(RedstoneClockBlock.POWERED)) {
+		if(RedstoneClockBlock.hasNeighborSignal(level, pos, blockState)) {
 			int totalInterval = blockEntity.activeInterval + blockEntity.idleInterval;
 			blockEntity.cyclicTick += 1;
 			if (blockEntity.cyclicTick >= totalInterval) {
