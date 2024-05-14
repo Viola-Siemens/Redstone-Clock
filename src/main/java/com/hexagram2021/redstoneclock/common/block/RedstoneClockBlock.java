@@ -27,11 +27,12 @@ import org.jetbrains.annotations.Nullable;
 @SuppressWarnings("deprecation")
 public class RedstoneClockBlock extends BaseEntityBlock {
 	public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
+	public static final BooleanProperty POWERED = BlockStateProperties.POWERED;
 	public static final BooleanProperty LIT = BlockStateProperties.LIT;
 
 	public RedstoneClockBlock(Properties properties) {
 		super(properties);
-		this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(LIT, true));
+		this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(POWERED, false).setValue(LIT, false));
 	}
 
 	@Override
@@ -78,8 +79,8 @@ public class RedstoneClockBlock extends BaseEntityBlock {
 
 	@Override
 	public int getSignal(BlockState blockState, BlockGetter level, BlockPos blockPos, Direction direction) {
-		BlockEntity blockentity = level.getBlockEntity(blockPos);
-		if (blockentity instanceof RedstoneClockBlockEntity redstoneClockBlockEntity) {
+		BlockEntity blockEntity = level.getBlockEntity(blockPos);
+		if (blockEntity instanceof RedstoneClockBlockEntity redstoneClockBlockEntity) {
 			return blockState.getValue(LIT) && blockState.getValue(FACING).getOpposite() == direction ? redstoneClockBlockEntity.getSignalStrength() : 0;
 		}
 		return super.getSignal(blockState, level, blockPos, direction);
@@ -91,6 +92,14 @@ public class RedstoneClockBlock extends BaseEntityBlock {
 	@Override
 	public boolean isSignalSource(BlockState blockState) {
 		return true;
+	}
+
+	@Override
+	public void neighborChanged(BlockState blockState, Level level, BlockPos blockPos, Block block, BlockPos neighbor, boolean piston) {
+		boolean flag = hasNeighborSignal(level, blockPos, blockState);
+		if (blockState.getValue(POWERED) != flag && !level.getBlockTicks().willTickThisTick(blockPos, this)) {
+			level.setBlock(blockPos, blockState.setValue(POWERED, flag).setValue(LIT, flag), Block.UPDATE_ALL);
+		}
 	}
 
 	@Override
@@ -118,8 +127,8 @@ public class RedstoneClockBlock extends BaseEntityBlock {
 	@Override
 	public void setPlacedBy(Level level, BlockPos blockPos, BlockState blockState, @Nullable LivingEntity livingEntity, ItemStack itemStack) {
 		if (itemStack.hasCustomHoverName()) {
-			BlockEntity blockentity = level.getBlockEntity(blockPos);
-			if (blockentity instanceof RedstoneClockBlockEntity redstoneClockBlockEntity) {
+			BlockEntity blockEntity = level.getBlockEntity(blockPos);
+			if (blockEntity instanceof RedstoneClockBlockEntity redstoneClockBlockEntity) {
 				redstoneClockBlockEntity.setCustomName(itemStack.getHoverName());
 			}
 		}
@@ -127,7 +136,7 @@ public class RedstoneClockBlock extends BaseEntityBlock {
 
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-		builder.add(FACING, LIT);
+		builder.add(FACING, POWERED, LIT);
 	}
 
 	@Override

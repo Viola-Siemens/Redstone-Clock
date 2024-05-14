@@ -105,19 +105,19 @@ public class RedstoneClockBlockEntity extends BlockEntity implements MenuProvide
 	};
 
 	//Configurable
-	private int signalStrength = 15;
-	private int activeInterval = 2;
-	private int idleInterval = 6;
+	public int signalStrength = 15;
+	public int activeInterval = 10;
+	public int idleInterval = 10;
 
 	//Internal
-	private int cyclicTick = 0;
+	public int cyclicTick = 0;
 
 	public RedstoneClockBlockEntity(BlockPos blockPos, BlockState blockState) {
 		super(RCBlockEntities.REDSTONE_CLOCK.get(), blockPos, blockState);
 	}
 
 	public static void serverTick(Level level, BlockPos pos, BlockState blockState, RedstoneClockBlockEntity blockEntity) {
-		if(RedstoneClockBlock.hasNeighborSignal(level, pos, blockState)) {
+		if(blockState.getValue(RedstoneClockBlock.POWERED)) {
 			int totalInterval = blockEntity.activeInterval + blockEntity.idleInterval;
 			blockEntity.cyclicTick += 1;
 			if (blockEntity.cyclicTick >= totalInterval) {
@@ -128,16 +128,26 @@ public class RedstoneClockBlockEntity extends BlockEntity implements MenuProvide
 			} else if (blockEntity.cyclicTick == blockEntity.activeInterval) {
 				level.setBlock(pos, blockState.setValue(RedstoneClockBlock.LIT, false), Block.UPDATE_ALL);
 			}
+		} else {
+			blockEntity.cyclicTick = 0;
 		}
 	}
 
 	private static final String TAG_CUSTOM_NAME = "CustomName";
+	private static final String TAG_SIGNAL_STRENGTH = "SignalStrength";
+	private static final String TAG_ACTIVE_INTERVAL = "ActiveInterval";
+	private static final String TAG_IDLE_INTERVAL = "IdleInterval";
+	private static final String TAG_CYCLIC_TICK = "cyclicTick";
 	@Override
 	public void load(CompoundTag nbt) {
 		super.load(nbt);
 		if(nbt.contains(TAG_CUSTOM_NAME, Tag.TAG_STRING)) {
 			this.name = Component.Serializer.fromJson(nbt.getString(TAG_CUSTOM_NAME));
 		}
+		this.signalStrength = nbt.getInt(TAG_SIGNAL_STRENGTH);
+		this.activeInterval = nbt.getInt(TAG_ACTIVE_INTERVAL);
+		this.idleInterval = nbt.getInt(TAG_IDLE_INTERVAL);
+		this.cyclicTick = nbt.getInt(TAG_CYCLIC_TICK);
 	}
 	@Override
 	public void saveAdditional(CompoundTag nbt) {
@@ -145,6 +155,10 @@ public class RedstoneClockBlockEntity extends BlockEntity implements MenuProvide
 		if (this.name != null) {
 			nbt.putString(TAG_CUSTOM_NAME, Component.Serializer.toJson(this.name));
 		}
+		nbt.putInt(TAG_SIGNAL_STRENGTH, this.signalStrength);
+		nbt.putInt(TAG_ACTIVE_INTERVAL, this.activeInterval);
+		nbt.putInt(TAG_IDLE_INTERVAL, this.idleInterval);
+		nbt.putInt(TAG_CYCLIC_TICK, this.cyclicTick);
 	}
 
 	public void setCustomName(Component name) {
