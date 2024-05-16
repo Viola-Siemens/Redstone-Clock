@@ -23,10 +23,11 @@ import javax.annotation.Nullable;
 
 public class RedstoneClockBlockEntity extends BlockEntity implements MenuProvider, Nameable {
 	public static final int NUM_SLOT = 0;
-	public static final int NUM_DATA = 3;
+	public static final int NUM_DATA = 4;
 	public static final int DATA_SIGNAL_STRENGTH = 0;
 	public static final int DATA_ACTIVE_INTERVAL = 1;
 	public static final int DATA_IDLE_INTERVAL = 2;
+	public static final int DATA_CYCLIC_TICK = 3;
 
 	@Nullable
 	private Component name;
@@ -85,6 +86,7 @@ public class RedstoneClockBlockEntity extends BlockEntity implements MenuProvide
 				case DATA_SIGNAL_STRENGTH -> RedstoneClockBlockEntity.this.signalStrength;
 				case DATA_ACTIVE_INTERVAL -> RedstoneClockBlockEntity.this.activeInterval;
 				case DATA_IDLE_INTERVAL -> RedstoneClockBlockEntity.this.idleInterval;
+				case DATA_CYCLIC_TICK -> RedstoneClockBlockEntity.this.cyclicTick;
 				default -> 0;
 			};
 		}
@@ -110,7 +112,7 @@ public class RedstoneClockBlockEntity extends BlockEntity implements MenuProvide
 	public int idleInterval = 10;
 
 	//Internal
-	public int cyclicTick = 0;
+	public int cyclicTick = -1;
 
 	public RedstoneClockBlockEntity(BlockPos blockPos, BlockState blockState) {
 		super(RCBlockEntities.REDSTONE_CLOCK.get(), blockPos, blockState);
@@ -129,7 +131,7 @@ public class RedstoneClockBlockEntity extends BlockEntity implements MenuProvide
 				level.setBlock(pos, blockState.setValue(RedstoneClockBlock.LIT, false), Block.UPDATE_ALL);
 			}
 		} else {
-			blockEntity.cyclicTick = 0;
+			blockEntity.cyclicTick = -1;
 		}
 	}
 

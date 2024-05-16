@@ -5,7 +5,7 @@
 
   "block.redstoneclock.redstone_clock": "Redstone Clock",
 
-  "screen.redstoneclock.redstone_clock.signal_strength": "Strength of output signal",
-  "screen.redstoneclock.redstone_clock.active_interval": "Activated ticks in a cycle",
-  "screen.redstoneclock.redstone_clock.idle_interval": "Inactivated ticks in a cycle"
+  "screen.redstoneclock.redstone_clock.signal_strength": "Strength of signal",
+  "screen.redstoneclock.redstone_clock.active_interval": "Activated ticks",
+  "screen.redstoneclock.redstone_clock.idle_interval": "Inactivated ticks"
 }

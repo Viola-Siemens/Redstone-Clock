@@ -7,5 +7,5 @@
 
   "screen.redstoneclock.redstone_clock.signal_strength": "输出信号强度",
   "screen.redstoneclock.redstone_clock.active_interval": "循环内激活的刻数",
-  "screen.redstoneclock.redstone_clock.idle_interval": "循环内未激活的刻数"
+  "screen.redstoneclock.redstone_clock.idle_interval": "循环内冷却的刻数"
 }

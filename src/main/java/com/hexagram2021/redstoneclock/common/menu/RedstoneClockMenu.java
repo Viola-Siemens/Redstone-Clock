@@ -12,7 +12,7 @@ import net.minecraft.world.item.ItemStack;
 
 public class RedstoneClockMenu extends AbstractContainerMenu {
 	private final Container redstoneClockContainer;
-	private final ContainerData redstoneClock;
+	public final ContainerData redstoneClock;
 
 	public RedstoneClockMenu(int id) {
 		this(id, new SimpleContainer(RedstoneClockBlockEntity.NUM_SLOT), new SimpleContainerData(RedstoneClockBlockEntity.NUM_DATA));
@@ -29,23 +29,23 @@ public class RedstoneClockMenu extends AbstractContainerMenu {
 	@Override
 	public boolean clickMenuButton(Player player, int id) {
 		switch(id) {
-			case 0 -> this.setData(RedstoneClockBlockEntity.DATA_SIGNAL_STRENGTH, Math.max(
-					0, this.redstoneClock.get(RedstoneClockBlockEntity.DATA_SIGNAL_STRENGTH) - 1
-			));
-			case 1 -> this.setData(RedstoneClockBlockEntity.DATA_SIGNAL_STRENGTH, Math.min(
+			case 0 -> this.setData(RedstoneClockBlockEntity.DATA_SIGNAL_STRENGTH, Math.min(
 					15, this.redstoneClock.get(RedstoneClockBlockEntity.DATA_SIGNAL_STRENGTH) + 1
 			));
-			case 2 -> this.setData(RedstoneClockBlockEntity.DATA_ACTIVE_INTERVAL, Math.max(
-					0, this.redstoneClock.get(RedstoneClockBlockEntity.DATA_ACTIVE_INTERVAL) - 2
+			case 1 -> this.setData(RedstoneClockBlockEntity.DATA_SIGNAL_STRENGTH, Math.max(
+					1, this.redstoneClock.get(RedstoneClockBlockEntity.DATA_SIGNAL_STRENGTH) - 1
 			));
-			case 3 -> this.setData(RedstoneClockBlockEntity.DATA_ACTIVE_INTERVAL, Math.min(
-					100, this.redstoneClock.get(RedstoneClockBlockEntity.DATA_ACTIVE_INTERVAL) + 2
+			case 2 -> this.setData(RedstoneClockBlockEntity.DATA_ACTIVE_INTERVAL, Math.min(
+					80, this.redstoneClock.get(RedstoneClockBlockEntity.DATA_ACTIVE_INTERVAL) + 2
 			));
-			case 4 -> this.setData(RedstoneClockBlockEntity.DATA_IDLE_INTERVAL, Math.max(
-					0, this.redstoneClock.get(RedstoneClockBlockEntity.DATA_IDLE_INTERVAL) - 2
+			case 3 -> this.setData(RedstoneClockBlockEntity.DATA_ACTIVE_INTERVAL, Math.max(
+					2, this.redstoneClock.get(RedstoneClockBlockEntity.DATA_ACTIVE_INTERVAL) - 2
 			));
-			case 5 -> this.setData(RedstoneClockBlockEntity.DATA_IDLE_INTERVAL, Math.min(
-					100, this.redstoneClock.get(RedstoneClockBlockEntity.DATA_IDLE_INTERVAL) + 2
+			case 4 -> this.setData(RedstoneClockBlockEntity.DATA_IDLE_INTERVAL, Math.min(
+					80, this.redstoneClock.get(RedstoneClockBlockEntity.DATA_IDLE_INTERVAL) + 2
+			));
+			case 5 -> this.setData(RedstoneClockBlockEntity.DATA_IDLE_INTERVAL, Math.max(
+					2, this.redstoneClock.get(RedstoneClockBlockEntity.DATA_IDLE_INTERVAL) - 2
 			));
 			default -> {
 				return false;
