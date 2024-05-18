@@ -18,16 +18,19 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Contract;
 
 import javax.annotation.Nullable;
 
 public class RedstoneClockBlockEntity extends BlockEntity implements MenuProvider, Nameable {
 	public static final int NUM_SLOT = 0;
-	public static final int NUM_DATA = 4;
+	public static final int NUM_DATA = 5;
+	public static final int BOUND_MULTIPLIER = 5;
 	public static final int DATA_SIGNAL_STRENGTH = 0;
 	public static final int DATA_ACTIVE_INTERVAL = 1;
 	public static final int DATA_IDLE_INTERVAL = 2;
-	public static final int DATA_CYCLIC_TICK = 3;
+	public static final int DATA_MULTIPLIER = 3;
+	public static final int DATA_CYCLIC_TICK = 4;
 
 	@Nullable
 	private Component name;
@@ -86,6 +89,7 @@ public class RedstoneClockBlockEntity extends BlockEntity implements MenuProvide
 				case DATA_SIGNAL_STRENGTH -> RedstoneClockBlockEntity.this.signalStrength;
 				case DATA_ACTIVE_INTERVAL -> RedstoneClockBlockEntity.this.activeInterval;
 				case DATA_IDLE_INTERVAL -> RedstoneClockBlockEntity.this.idleInterval;
+				case DATA_MULTIPLIER -> RedstoneClockBlockEntity.this.multiplier;
 				case DATA_CYCLIC_TICK -> RedstoneClockBlockEntity.this.cyclicTick;
 				default -> 0;
 			};
@@ -97,6 +101,8 @@ public class RedstoneClockBlockEntity extends BlockEntity implements MenuProvide
 				case DATA_SIGNAL_STRENGTH -> RedstoneClockBlockEntity.this.signalStrength = value;
 				case DATA_ACTIVE_INTERVAL -> RedstoneClockBlockEntity.this.activeInterval = value;
 				case DATA_IDLE_INTERVAL -> RedstoneClockBlockEntity.this.idleInterval = value;
+				case DATA_MULTIPLIER -> RedstoneClockBlockEntity.this.multiplier = value;
+				case DATA_CYCLIC_TICK -> RedstoneClockBlockEntity.this.cyclicTick = value;
 			}
 		}
 
@@ -107,27 +113,43 @@ public class RedstoneClockBlockEntity extends BlockEntity implements MenuProvide
 	};
 
 	//Configurable
-	public int signalStrength = 15;
-	public int activeInterval = 10;
-	public int idleInterval = 10;
+	private int signalStrength = 15;
+	private int activeInterval = 20;
+	private int idleInterval = 20;
+	private int multiplier = 0;
 
 	//Internal
-	public int cyclicTick = -1;
+	private int cyclicTick = -1;
 
 	public RedstoneClockBlockEntity(BlockPos blockPos, BlockState blockState) {
 		super(RCBlockEntities.REDSTONE_CLOCK.get(), blockPos, blockState);
 	}
 
+	@Contract(pure = true)
+	public static int toMultiplier(int log) {
+		return switch (log) {
+			case 1 -> 10;
+			case 2 -> 100;
+			case 3 -> 1000;
+			case 4 -> 10000;
+			default -> 1;
+		};
+	}
+
 	public static void serverTick(Level level, BlockPos pos, BlockState blockState, RedstoneClockBlockEntity blockEntity) {
 		if(blockState.getValue(RedstoneClockBlock.POWERED)) {
-			int totalInterval = blockEntity.activeInterval + blockEntity.idleInterval;
+			int multi = toMultiplier(blockEntity.multiplier);
+			int totalInterval = (blockEntity.activeInterval + blockEntity.idleInterval) * multi;
 			blockEntity.cyclicTick += 1;
 			if (blockEntity.cyclicTick >= totalInterval) {
 				blockEntity.cyclicTick = 0;
 			}
-			if (blockEntity.cyclicTick == 0) {
-				level.setBlock(pos, blockState.setValue(RedstoneClockBlock.LIT, true), Block.UPDATE_ALL);
-			} else if (blockEntity.cyclicTick == blockEntity.activeInterval) {
+			boolean lit = blockState.getValue(RedstoneClockBlock.LIT);
+			if (blockEntity.cyclicTick < blockEntity.activeInterval * multi) {
+				if(!lit) {
+					level.setBlock(pos, blockState.setValue(RedstoneClockBlock.LIT, true), Block.UPDATE_ALL);
+				}
+			} else if (lit) {
 				level.setBlock(pos, blockState.setValue(RedstoneClockBlock.LIT, false), Block.UPDATE_ALL);
 			}
 		} else {
@@ -139,6 +161,7 @@ public class RedstoneClockBlockEntity extends BlockEntity implements MenuProvide
 	private static final String TAG_SIGNAL_STRENGTH = "SignalStrength";
 	private static final String TAG_ACTIVE_INTERVAL = "ActiveInterval";
 	private static final String TAG_IDLE_INTERVAL = "IdleInterval";
+	private static final String TAG_MULTIPLIER = "Multiplier";
 	private static final String TAG_CYCLIC_TICK = "cyclicTick";
 	@Override
 	public void load(CompoundTag nbt) {
@@ -149,6 +172,7 @@ public class RedstoneClockBlockEntity extends BlockEntity implements MenuProvide
 		this.signalStrength = nbt.getInt(TAG_SIGNAL_STRENGTH);
 		this.activeInterval = nbt.getInt(TAG_ACTIVE_INTERVAL);
 		this.idleInterval = nbt.getInt(TAG_IDLE_INTERVAL);
+		this.multiplier = nbt.getInt(TAG_MULTIPLIER);
 		this.cyclicTick = nbt.getInt(TAG_CYCLIC_TICK);
 	}
 	@Override
@@ -160,6 +184,7 @@ public class RedstoneClockBlockEntity extends BlockEntity implements MenuProvide
 		nbt.putInt(TAG_SIGNAL_STRENGTH, this.signalStrength);
 		nbt.putInt(TAG_ACTIVE_INTERVAL, this.activeInterval);
 		nbt.putInt(TAG_IDLE_INTERVAL, this.idleInterval);
+		nbt.putInt(TAG_MULTIPLIER, this.multiplier);
 		nbt.putInt(TAG_CYCLIC_TICK, this.cyclicTick);
 	}
 

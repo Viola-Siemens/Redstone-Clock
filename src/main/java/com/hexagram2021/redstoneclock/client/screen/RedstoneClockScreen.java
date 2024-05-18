@@ -22,13 +22,14 @@ public class RedstoneClockScreen extends AbstractContainerScreen<RedstoneClockMe
 	private static final Component TEXT_ACTIVE_INTERVAL = Component.translatable("screen.redstoneclock.redstone_clock.active_interval");
 	private static final Component TEXT_IDLE_INTERVAL = Component.translatable("screen.redstoneclock.redstone_clock.idle_interval");
 
-	private final RCButton[] BUTTONS = new RCButton[] {
+	private static final RCButton[] BUTTONS = new RCButton[] {
 			new RCButton(7, 24, 16, 16, 0, 116, 0),
 			new RCButton(27, 24, 16, 16, 16, 116, 1),
 			new RCButton(7, 56, 16, 16, 0, 116, 2),
 			new RCButton(27, 56, 16, 16, 16, 116, 3),
 			new RCButton(7, 88, 16, 16, 0, 116, 4),
-			new RCButton(27, 88, 16, 16, 16, 116, 5)
+			new RCButton(27, 88, 16, 16, 16, 116, 5),
+			new RCButton(108, 4, 40, 16, 32, 116, 6)
 	};
 
 	public RedstoneClockScreen(RedstoneClockMenu menu, Inventory inventory, Component title) {
@@ -46,13 +47,15 @@ public class RedstoneClockScreen extends AbstractContainerScreen<RedstoneClockMe
 
 		transform.drawString(this.font, Component.literal(
 				String.valueOf(this.menu.redstoneClock.get(RedstoneClockBlockEntity.DATA_SIGNAL_STRENGTH))
-		), 184, 28, 0xffffff, false);
+		), 168, 28, 0xffffff, false);
 		transform.drawString(this.font, Component.literal(
 				String.valueOf(this.menu.redstoneClock.get(RedstoneClockBlockEntity.DATA_ACTIVE_INTERVAL))
-		), 184, 60, 0xffffff, false);
+		), 168, 60, 0xffffff, false);
 		transform.drawString(this.font, Component.literal(
 				String.valueOf(this.menu.redstoneClock.get(RedstoneClockBlockEntity.DATA_IDLE_INTERVAL))
-		), 184, 92, 0xffffff, false);
+		), 168, 92, 0xffffff, false);
+		String multi = "*" + RedstoneClockBlockEntity.toMultiplier(this.menu.redstoneClock.get(RedstoneClockBlockEntity.DATA_MULTIPLIER));
+		transform.drawString(this.font, Component.literal(multi), 146 - this.font.width(multi), 9, 0x404040, false);
 	}
 
 	@Override

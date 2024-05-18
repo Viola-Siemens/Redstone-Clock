@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/orientable_with_bottom",
+  "textures": {
+    "front": "redstoneclock:block/redstone_clock_side_output_lit",
+    "side": "redstoneclock:block/redstone_clock_side_lit",
+    "top": "redstoneclock:block/redstone_clock_top",
+    "bottom": "redstoneclock:block/redstone_clock_bottom"
+  }
+}
