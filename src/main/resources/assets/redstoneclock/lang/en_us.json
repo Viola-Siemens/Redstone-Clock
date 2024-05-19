@@ -3,6 +3,8 @@
   "language.code": "en_us",
   "language.region": "United States",
 
+  "itemGroup.redstoneclock": "Redstone Clock",
+
   "block.redstoneclock.redstone_clock": "Redstone Clock",
 
   "screen.redstoneclock.redstone_clock.signal_strength": "Strength of signal",

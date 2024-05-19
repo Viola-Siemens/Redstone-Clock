@@ -3,6 +3,8 @@
   "language.code": "zh_cn",
   "language.region": "China",
 
+  "itemGroup.redstoneclock": "红石钟",
+
   "block.redstoneclock.redstone_clock": "红石钟",
 
   "screen.redstoneclock.redstone_clock.signal_strength": "输出信号强度",
