@@ -9,10 +9,24 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Contract;
 
 public class RedstoneClockMenu extends AbstractContainerMenu {
 	private final Container redstoneClockContainer;
 	public final ContainerData redstoneClock;
+
+	public int multiplier = 0;
+
+	@Contract(pure = true)
+	public static int toMultiplier(int log) {
+		return switch (log) {
+			case 1 -> 20;
+			case 2 -> 200;
+			case 3 -> 2000;
+			case 4 -> 20000;
+			default -> 2;
+		};
+	}
 
 	public RedstoneClockMenu(int id) {
 		this(id, new SimpleContainer(RedstoneClockBlockEntity.NUM_SLOT), new SimpleContainerData(RedstoneClockBlockEntity.NUM_DATA));
@@ -36,31 +50,30 @@ public class RedstoneClockMenu extends AbstractContainerMenu {
 					1, this.redstoneClock.get(RedstoneClockBlockEntity.DATA_SIGNAL_STRENGTH) - 1
 			));
 			case 2 -> this.setData(RedstoneClockBlockEntity.DATA_ACTIVE_INTERVAL, Math.min(
-					200, this.redstoneClock.get(RedstoneClockBlockEntity.DATA_ACTIVE_INTERVAL) + 2
+					24000, this.redstoneClock.get(RedstoneClockBlockEntity.DATA_ACTIVE_INTERVAL) + toMultiplier(this.multiplier)
 			));
 			case 3 -> this.setData(RedstoneClockBlockEntity.DATA_ACTIVE_INTERVAL, Math.max(
-					2, this.redstoneClock.get(RedstoneClockBlockEntity.DATA_ACTIVE_INTERVAL) - 2
+					2, this.redstoneClock.get(RedstoneClockBlockEntity.DATA_ACTIVE_INTERVAL) - toMultiplier(this.multiplier)
 			));
 			case 4 -> this.setData(RedstoneClockBlockEntity.DATA_IDLE_INTERVAL, Math.min(
-					200, this.redstoneClock.get(RedstoneClockBlockEntity.DATA_IDLE_INTERVAL) + 2
+					24000, this.redstoneClock.get(RedstoneClockBlockEntity.DATA_IDLE_INTERVAL) + toMultiplier(this.multiplier)
 			));
 			case 5 -> this.setData(RedstoneClockBlockEntity.DATA_IDLE_INTERVAL, Math.max(
-					2, this.redstoneClock.get(RedstoneClockBlockEntity.DATA_IDLE_INTERVAL) - 2
+					2, this.redstoneClock.get(RedstoneClockBlockEntity.DATA_IDLE_INTERVAL) - toMultiplier(this.multiplier)
 			));
-			case 6 -> {
-				int oldLog = this.redstoneClock.get(RedstoneClockBlockEntity.DATA_MULTIPLIER);
-				int oldMulti = RedstoneClockBlockEntity.toMultiplier(oldLog);
-				int newLog = (oldLog + 1) % RedstoneClockBlockEntity.BOUND_MULTIPLIER;
-				this.setData(RedstoneClockBlockEntity.DATA_MULTIPLIER, newLog);
-				int newMulti = RedstoneClockBlockEntity.toMultiplier(newLog);
-				int oldCyclicTick = this.redstoneClock.get(RedstoneClockBlockEntity.DATA_CYCLIC_TICK);
-				this.setData(RedstoneClockBlockEntity.DATA_CYCLIC_TICK, oldCyclicTick * newMulti / oldMulti);
-			}
+			case 6 -> this.setNextMultiplier();
 			default -> {
 				return false;
 			}
 		}
 		return true;
+	}
+
+	public int getMultiplier() {
+		return this.multiplier;
+	}
+	public void setNextMultiplier() {
+		this.multiplier = (this.multiplier + 1) % RedstoneClockBlockEntity.BOUND_MULTIPLIER;
 	}
 
 	@Override

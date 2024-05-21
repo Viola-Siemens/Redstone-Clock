@@ -18,19 +18,17 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.Contract;
 
 import javax.annotation.Nullable;
 
 public class RedstoneClockBlockEntity extends BlockEntity implements MenuProvider, Nameable {
 	public static final int NUM_SLOT = 0;
-	public static final int NUM_DATA = 5;
+	public static final int NUM_DATA = 4;
 	public static final int BOUND_MULTIPLIER = 5;
 	public static final int DATA_SIGNAL_STRENGTH = 0;
 	public static final int DATA_ACTIVE_INTERVAL = 1;
 	public static final int DATA_IDLE_INTERVAL = 2;
-	public static final int DATA_MULTIPLIER = 3;
-	public static final int DATA_CYCLIC_TICK = 4;
+	public static final int DATA_CYCLIC_TICK = 3;
 
 	@Nullable
 	private Component name;
@@ -89,7 +87,6 @@ public class RedstoneClockBlockEntity extends BlockEntity implements MenuProvide
 				case DATA_SIGNAL_STRENGTH -> RedstoneClockBlockEntity.this.signalStrength;
 				case DATA_ACTIVE_INTERVAL -> RedstoneClockBlockEntity.this.activeInterval;
 				case DATA_IDLE_INTERVAL -> RedstoneClockBlockEntity.this.idleInterval;
-				case DATA_MULTIPLIER -> RedstoneClockBlockEntity.this.multiplier;
 				case DATA_CYCLIC_TICK -> RedstoneClockBlockEntity.this.cyclicTick;
 				default -> 0;
 			};
@@ -101,7 +98,6 @@ public class RedstoneClockBlockEntity extends BlockEntity implements MenuProvide
 				case DATA_SIGNAL_STRENGTH -> RedstoneClockBlockEntity.this.signalStrength = value;
 				case DATA_ACTIVE_INTERVAL -> RedstoneClockBlockEntity.this.activeInterval = value;
 				case DATA_IDLE_INTERVAL -> RedstoneClockBlockEntity.this.idleInterval = value;
-				case DATA_MULTIPLIER -> RedstoneClockBlockEntity.this.multiplier = value;
 				case DATA_CYCLIC_TICK -> RedstoneClockBlockEntity.this.cyclicTick = value;
 			}
 		}
@@ -125,27 +121,15 @@ public class RedstoneClockBlockEntity extends BlockEntity implements MenuProvide
 		super(RCBlockEntities.REDSTONE_CLOCK.get(), blockPos, blockState);
 	}
 
-	@Contract(pure = true)
-	public static int toMultiplier(int log) {
-		return switch (log) {
-			case 1 -> 10;
-			case 2 -> 100;
-			case 3 -> 1000;
-			case 4 -> 10000;
-			default -> 1;
-		};
-	}
-
 	public static void serverTick(Level level, BlockPos pos, BlockState blockState, RedstoneClockBlockEntity blockEntity) {
 		if(blockState.getValue(RedstoneClockBlock.POWERED)) {
-			int multi = toMultiplier(blockEntity.multiplier);
-			int totalInterval = (blockEntity.activeInterval + blockEntity.idleInterval) * multi;
+			int totalInterval = blockEntity.activeInterval + blockEntity.idleInterval;
 			blockEntity.cyclicTick += 1;
 			if (blockEntity.cyclicTick >= totalInterval) {
 				blockEntity.cyclicTick = 0;
 			}
 			boolean lit = blockState.getValue(RedstoneClockBlock.LIT);
-			if (blockEntity.cyclicTick < blockEntity.activeInterval * multi) {
+			if (blockEntity.cyclicTick < blockEntity.activeInterval) {
 				if(!lit) {
 					level.setBlock(pos, blockState.setValue(RedstoneClockBlock.LIT, true), Block.UPDATE_ALL);
 				}

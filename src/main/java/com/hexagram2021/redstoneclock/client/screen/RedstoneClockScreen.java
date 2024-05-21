@@ -12,7 +12,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Inventory;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import static com.hexagram2021.redstoneclock.RedstoneClock.MODID;
 
@@ -23,19 +25,34 @@ public class RedstoneClockScreen extends AbstractContainerScreen<RedstoneClockMe
 	private static final Component TEXT_IDLE_INTERVAL = Component.translatable("screen.redstoneclock.redstone_clock.idle_interval");
 
 	private static final RCButton[] BUTTONS = new RCButton[] {
-			new RCButton(7, 24, 16, 16, 0, 116, 0),
-			new RCButton(27, 24, 16, 16, 16, 116, 1),
-			new RCButton(7, 56, 16, 16, 0, 116, 2),
-			new RCButton(27, 56, 16, 16, 16, 116, 3),
-			new RCButton(7, 88, 16, 16, 0, 116, 4),
-			new RCButton(27, 88, 16, 16, 16, 116, 5),
-			new RCButton(108, 4, 40, 16, 32, 116, 6)
+			new RCButton(7, 24, 16, 16, 0, 136, 0),
+			new RCButton(27, 24, 16, 16, 16, 136, 1),
+			new RCButton(7, 56, 16, 16, 0, 136, 2),
+			new RCButton(27, 56, 16, 16, 16, 136, 3),
+			new RCButton(7, 88, 16, 16, 0, 136, 4),
+			new RCButton(27, 88, 16, 16, 16, 136, 5),
+			new RCButton(116, 112, 40, 16, 32, 136, 6) {
+				@Override
+				public boolean release(RedstoneClockMenu menu, MultiPlayerGameMode gameMode, int leftPos, int topPos, double x, double y) {
+					boolean ret = super.release(menu, gameMode, leftPos, topPos, x, y);
+					if(ret) {
+						menu.setNextMultiplier();
+					}
+					return ret;
+				}
+			}
 	};
 
 	public RedstoneClockScreen(RedstoneClockMenu menu, Inventory inventory, Component title) {
 		super(menu, inventory, title);
-		this.imageWidth = 212;
-		this.imageHeight = 116;
+		this.imageWidth = 216;
+		this.imageHeight = 136;
+	}
+
+	@Override
+	public void render(GuiGraphics transform, int x, int y, float partialTicks) {
+		super.render(transform, x, y, partialTicks);
+		this.renderTooltip(transform, x, y);
 	}
 
 	@Override
@@ -48,14 +65,18 @@ public class RedstoneClockScreen extends AbstractContainerScreen<RedstoneClockMe
 		transform.drawString(this.font, Component.literal(
 				String.valueOf(this.menu.redstoneClock.get(RedstoneClockBlockEntity.DATA_SIGNAL_STRENGTH))
 		), 168, 28, 0xffffff, false);
+		int activeInterval = this.menu.redstoneClock.get(RedstoneClockBlockEntity.DATA_ACTIVE_INTERVAL);
 		transform.drawString(this.font, Component.literal(
-				String.valueOf(this.menu.redstoneClock.get(RedstoneClockBlockEntity.DATA_ACTIVE_INTERVAL))
+				activeInterval >= 10000 ? (activeInterval / 1000) + "." + ((activeInterval / 100) % 10) + "k" : String.valueOf(activeInterval)
 		), 168, 60, 0xffffff, false);
+		int idleInterval = this.menu.redstoneClock.get(RedstoneClockBlockEntity.DATA_IDLE_INTERVAL);
 		transform.drawString(this.font, Component.literal(
-				String.valueOf(this.menu.redstoneClock.get(RedstoneClockBlockEntity.DATA_IDLE_INTERVAL))
+				idleInterval >= 10000 ? (idleInterval / 1000) + "." + ((idleInterval / 100) % 10) + "k" : String.valueOf(idleInterval)
 		), 168, 92, 0xffffff, false);
-		String multi = "*" + RedstoneClockBlockEntity.toMultiplier(this.menu.redstoneClock.get(RedstoneClockBlockEntity.DATA_MULTIPLIER));
-		transform.drawString(this.font, Component.literal(multi), 146 - this.font.width(multi), 9, 0x404040, false);
+		String multi = "*" + RedstoneClockMenu.toMultiplier(this.menu.getMultiplier());
+		transform.drawString(this.font, Component.literal(multi), 152 - this.font.width(multi), 117, 0x404040, false);
+		Component multiText = Component.translatable("screen.redstoneclock.redstone_clock.multiplier");
+		transform.drawString(this.font, multiText, 114 - this.font.width(multiText), 116, 0xa0a0a0, false);
 	}
 
 	@Override
@@ -76,10 +97,38 @@ public class RedstoneClockScreen extends AbstractContainerScreen<RedstoneClockMe
 			return;
 		}
 
-		transform.blit(BG_LOCATION, this.leftPos + 160, this.topPos + 6, 212, 0, 10, 10);
+		transform.blit(BG_LOCATION, this.leftPos + 160, this.topPos + 6, 216, 0, 10, 10);
 		int activeInterval = this.menu.redstoneClock.get(RedstoneClockBlockEntity.DATA_ACTIVE_INTERVAL);
 		if(cyclicTick < activeInterval) {
-			transform.blit(BG_LOCATION, this.leftPos + 176, this.topPos + 6, 212, 0, 10, 10);
+			transform.blit(BG_LOCATION, this.leftPos + 176, this.topPos + 6, 216, 0, 10, 10);
+		}
+	}
+
+	@Override
+	protected void renderTooltip(GuiGraphics transform, int x, int y) {
+		super.renderTooltip(transform, x, y);
+
+		int logicX = x - this.leftPos;
+		int logicY = y - this.topPos;
+		if(logicX >= 166 && logicX < 206) {
+			int interval;
+			if(logicY >= 57 && logicY < 71) {
+				interval = this.menu.redstoneClock.get(RedstoneClockBlockEntity.DATA_ACTIVE_INTERVAL);
+			} else if(logicY >= 89 && logicY < 103) {
+				interval = this.menu.redstoneClock.get(RedstoneClockBlockEntity.DATA_ACTIVE_INTERVAL);
+			} else {
+				return;
+			}
+			int ms = interval % 20 * 50;
+			int s = interval / 20;
+			int m = s / 60;
+			int h = m / 60;
+			m %= 60;
+			s %= 60;
+			transform.renderTooltip(this.font, List.of(
+					Component.translatable("screen.redstoneclock.redstone_clock.tooltip.total_ticks", interval),
+					Component.translatable("screen.redstoneclock.redstone_clock.tooltip.time", h, m, s, ms)
+			), Optional.empty(), x, y);
 		}
 	}
 
@@ -104,7 +153,7 @@ public class RedstoneClockScreen extends AbstractContainerScreen<RedstoneClockMe
 		return super.mouseReleased(x, y, button);
 	}
 
-	static final class RCButton implements IButton<RedstoneClockMenu> {
+	static class RCButton implements IButton<RedstoneClockMenu> {
 		private final int posX;
 		private final int posY;
 		private final int width;
