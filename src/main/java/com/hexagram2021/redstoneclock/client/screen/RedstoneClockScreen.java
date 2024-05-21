@@ -115,7 +115,7 @@ public class RedstoneClockScreen extends AbstractContainerScreen<RedstoneClockMe
 			if(logicY >= 57 && logicY < 71) {
 				interval = this.menu.redstoneClock.get(RedstoneClockBlockEntity.DATA_ACTIVE_INTERVAL);
 			} else if(logicY >= 89 && logicY < 103) {
-				interval = this.menu.redstoneClock.get(RedstoneClockBlockEntity.DATA_ACTIVE_INTERVAL);
+				interval = this.menu.redstoneClock.get(RedstoneClockBlockEntity.DATA_IDLE_INTERVAL);
 			} else {
 				return;
 			}
