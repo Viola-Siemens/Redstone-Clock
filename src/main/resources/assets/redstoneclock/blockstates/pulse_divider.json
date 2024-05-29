@@ -1,0 +1,49 @@
+{
+  "variants": {
+    "facing=east,lit=false,powered=false": {
+      "model": "redstoneclock:block/pulse_divider",
+      "y": 90
+    },
+    "facing=east,lit=false,powered=true": {
+      "model": "redstoneclock:block/pulse_divider_powered",
+      "y": 90
+    },
+    "facing=east,lit=true": {
+      "model": "redstoneclock:block/pulse_divider_lit",
+      "y": 90
+    },
+    "facing=north,lit=false,powered=false": {
+      "model": "redstoneclock:block/pulse_divider"
+    },
+    "facing=north,lit=false,powered=true": {
+      "model": "redstoneclock:block/pulse_divider_powered"
+    },
+    "facing=north,lit=true": {
+      "model": "redstoneclock:block/pulse_divider_lit"
+    },
+    "facing=south,lit=false,powered=false": {
+      "model": "redstoneclock:block/pulse_divider",
+      "y": 180
+    },
+    "facing=south,lit=false,powered=true": {
+      "model": "redstoneclock:block/pulse_divider_powered",
+      "y": 180
+    },
+    "facing=south,lit=true": {
+      "model": "redstoneclock:block/pulse_divider_lit",
+      "y": 180
+    },
+    "facing=west,lit=false,powered=false": {
+      "model": "redstoneclock:block/pulse_divider",
+      "y": 270
+    },
+    "facing=west,lit=false,powered=true": {
+      "model": "redstoneclock:block/pulse_divider_powered",
+      "y": 270
+    },
+    "facing=west,lit=true": {
+      "model": "redstoneclock:block/pulse_divider_lit",
+      "y": 270
+    }
+  }
+}

@@ -1,5 +1,6 @@
 package com.hexagram2021.redstoneclock.common.register;
 
+import com.hexagram2021.redstoneclock.common.menu.PulseDividerMenu;
 import com.hexagram2021.redstoneclock.common.menu.RedstoneClockMenu;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.inventory.MenuType;
@@ -15,6 +16,9 @@ public final class RCMenuTypes {
 
 	public static final RegistryObject<MenuType<RedstoneClockMenu>> REDSTONE_CLOCK = REGISTER.register(
 			"redstone_clock", () -> new MenuType<>((id, inventory) -> new RedstoneClockMenu(id), FeatureFlags.VANILLA_SET)
+	);
+	public static final RegistryObject<MenuType<PulseDividerMenu>> PULSE_DIVIDER = REGISTER.register(
+			"pulse_divider", () -> new MenuType<>((id, inventory) -> new PulseDividerMenu(id), FeatureFlags.VANILLA_SET)
 	);
 
 	private RCMenuTypes() {

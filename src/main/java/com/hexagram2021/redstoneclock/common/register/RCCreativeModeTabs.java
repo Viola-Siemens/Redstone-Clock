@@ -20,7 +20,10 @@ public final class RCCreativeModeTabs {
 			() -> CreativeModeTab.builder().withTabsBefore(CreativeModeTabs.SPAWN_EGGS)
 					.title(Component.translatable("itemGroup.redstoneclock"))
 					.icon(() -> new ItemStack(RCItems.REDSTONE_CLOCK.get()))
-					.displayItems((flags, output) -> output.accept(RCItems.REDSTONE_CLOCK.get()))
+					.displayItems((flags, output) -> {
+						output.accept(RCItems.REDSTONE_CLOCK.get());
+						output.accept(RCItems.PULSE_DIVIDER.get());
+					})
 					.build()
 	);
 

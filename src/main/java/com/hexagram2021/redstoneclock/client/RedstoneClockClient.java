@@ -1,6 +1,6 @@
 package com.hexagram2021.redstoneclock.client;
 
-import com.hexagram2021.redstoneclock.client.screen.RedstoneClockScreen;
+import com.hexagram2021.redstoneclock.client.screen.*;
 import com.hexagram2021.redstoneclock.common.register.RCMenuTypes;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraftforge.api.distmarker.Dist;
@@ -22,5 +22,6 @@ public class RedstoneClockClient {
 
 	private static void registerContainersAndScreens() {
 		MenuScreens.register(RCMenuTypes.REDSTONE_CLOCK.get(), RedstoneClockScreen::new);
+		MenuScreens.register(RCMenuTypes.PULSE_DIVIDER.get(), PulseDividerScreen::new);
 	}
 }

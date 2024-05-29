@@ -146,7 +146,7 @@ public class RedstoneClockBlockEntity extends BlockEntity implements MenuProvide
 	private static final String TAG_ACTIVE_INTERVAL = "ActiveInterval";
 	private static final String TAG_IDLE_INTERVAL = "IdleInterval";
 	private static final String TAG_MULTIPLIER = "Multiplier";
-	private static final String TAG_CYCLIC_TICK = "cyclicTick";
+	private static final String TAG_CYCLIC_TICK = "CyclicTick";
 	@Override
 	public void load(CompoundTag nbt) {
 		super.load(nbt);

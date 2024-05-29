@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "redstoneclock:block/pulse_divider_output_lit",
+    "up": "redstoneclock:block/pulse_divider_top",
+    "down": "redstoneclock:block/pulse_divider_top",
+    "north": "redstoneclock:block/pulse_divider_output_lit",
+    "south": "redstoneclock:block/redstone_clock_side_lit",
+    "west": "redstoneclock:block/pulse_divider_side",
+    "east": "redstoneclock:block/pulse_divider_side"
+  }
+}

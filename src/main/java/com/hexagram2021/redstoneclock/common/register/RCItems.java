@@ -14,6 +14,8 @@ public final class RCItems {
 
 	public static final RegistryObject<BlockItem> REDSTONE_CLOCK = REGISTER.register("redstone_clock", () ->
 			new BlockItem(RCBlocks.REDSTONE_CLOCK.get(), new Item.Properties()));
+	public static final RegistryObject<BlockItem> PULSE_DIVIDER = REGISTER.register("pulse_divider", () ->
+			new BlockItem(RCBlocks.PULSE_DIVIDER.get(), new Item.Properties()));
 
 	private RCItems() {
 	}

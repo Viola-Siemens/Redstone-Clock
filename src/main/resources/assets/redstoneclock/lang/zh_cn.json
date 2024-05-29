@@ -6,11 +6,14 @@
   "itemGroup.redstoneclock": "红石钟",
 
   "block.redstoneclock.redstone_clock": "红石钟",
+  "block.redstoneclock.pulse_divider": "脉冲分割器",
 
   "screen.redstoneclock.redstone_clock.signal_strength": "输出信号强度",
   "screen.redstoneclock.redstone_clock.active_interval": "循环内激活的刻数",
   "screen.redstoneclock.redstone_clock.idle_interval": "循环内冷却的刻数",
   "screen.redstoneclock.redstone_clock.multiplier": "倍率：",
   "screen.redstoneclock.redstone_clock.tooltip.total_ticks": "总刻数：%s",
-  "screen.redstoneclock.redstone_clock.tooltip.time": "时间：%s小时 %s分钟 %s秒 %s毫秒"
+  "screen.redstoneclock.redstone_clock.tooltip.time": "时间：%s小时 %s分钟 %s秒 %s毫秒",
+  "screen.redstoneclock.pulse_divider.signal_strength": "输出信号强度",
+  "screen.redstoneclock.pulse_divider.every_pulse": "输出需接收脉冲数"
 }
