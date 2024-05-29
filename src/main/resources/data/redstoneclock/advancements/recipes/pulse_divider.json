@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_bell": {
+    "has_observer": {
       "conditions": {
         "items": [
           {
@@ -58,7 +58,7 @@
   },
   "requirements": [
     [
-      "has_bell",
+      "has_observer",
       "has_redstone",
       "has_stone_bricks",
       "has_repeater",
@@ -67,7 +67,7 @@
   ],
   "rewards": {
     "recipes": [
-      "redstoneclock:redstone_clock"
+      "redstoneclock:pulse_divider"
     ]
   },
   "sends_telemetry_event": false
