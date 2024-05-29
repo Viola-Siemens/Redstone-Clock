@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "redstoneclock:redstone_clock",
+    "redstoneclock:pulse_divider"
+  ]
+}

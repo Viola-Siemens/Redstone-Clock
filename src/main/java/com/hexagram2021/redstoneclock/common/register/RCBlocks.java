@@ -21,13 +21,13 @@ public final class RCBlocks {
 	private static final DeferredRegister<Block> REGISTER = DeferredRegister.create(ForgeRegistries.BLOCKS, MODID);
 
 	public static final RegistryObject<RedstoneClockBlock> REDSTONE_CLOCK = REGISTER.register("redstone_clock", () -> new RedstoneClockBlock(
-			BlockBehaviour.Properties.of().mapColor(MapColor.STONE)
+			BlockBehaviour.Properties.of().mapColor(MapColor.STONE).requiresCorrectToolForDrops()
 					.lightLevel(blockState -> blockState.getValue(RedstoneClockBlock.POWERED) ? 7 : 0)
 					.sound(SoundType.METAL).pushReaction(PushReaction.BLOCK)
 					.isValidSpawn((BlockState blockState, BlockGetter level, BlockPos blockPos, EntityType<?> entityType) -> false)
 	));
 	public static final RegistryObject<PulseDividerBlock> PULSE_DIVIDER = REGISTER.register("pulse_divider", () -> new PulseDividerBlock(
-			BlockBehaviour.Properties.of().mapColor(MapColor.STONE)
+			BlockBehaviour.Properties.of().mapColor(MapColor.STONE).requiresCorrectToolForDrops()
 					.sound(SoundType.METAL).pushReaction(PushReaction.BLOCK)
 					.isValidSpawn((BlockState blockState, BlockGetter level, BlockPos blockPos, EntityType<?> entityType) -> false)
 	));

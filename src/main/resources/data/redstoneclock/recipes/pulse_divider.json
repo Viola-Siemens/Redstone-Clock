@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "#": {
+      "item": "minecraft:redstone"
+    },
+    "B": {
+      "item": "minecraft:stone_bricks"
+    },
+    "R": {
+      "item": "minecraft:repeater"
+    },
+    "X": {
+      "item": "minecraft:observer"
+    }
+  },
+  "pattern": [
+    "#B#",
+    "BXB",
+    "RBR"
+  ],
+  "result": {
+    "item": "redstoneclock:pulse_divider"
+  },
+  "show_notification": true
+}
