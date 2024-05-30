@@ -81,6 +81,7 @@ public class RedstoneClockScreen extends AbstractContainerScreen<RedstoneClockMe
 
 	@Override
 	protected void renderBg(GuiGraphics transform, float ticks, int x, int y) {
+		this.renderBackground(transform);
 		transform.blit(BG_LOCATION, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
 		this.renderButtons(transform, x, y);
 		this.renderSignals(transform);

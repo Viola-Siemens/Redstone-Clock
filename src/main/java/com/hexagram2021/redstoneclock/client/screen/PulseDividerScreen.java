@@ -58,28 +58,14 @@ public class PulseDividerScreen extends AbstractContainerScreen<PulseDividerMenu
 
 	@Override
 	protected void renderBg(GuiGraphics transform, float ticks, int x, int y) {
+		this.renderBackground(transform);
 		transform.blit(BG_LOCATION, this.leftPos, this.topPos, 0, 0, this.imageWidth, this.imageHeight);
 		this.renderButtons(transform, x, y);
-		this.renderSignals(transform);
 	}
 
 	private void renderButtons(GuiGraphics transform, int x, int y) {
 		for(PDButton b: BUTTONS) {
 			b.render(transform, this.leftPos, this.topPos, x, y);
-		}
-	}
-	private void renderSignals(GuiGraphics transform) {
-		boolean flag = this.menu.access.evaluate((level, blockPos) -> {
-			BlockState blockState = level.getBlockState(blockPos);
-			return blockState.hasProperty(PulseDividerBlock.POWERED) && blockState.getValue(PulseDividerBlock.POWERED);
-		}).orElse(false);
-		if(!flag) {
-			return;
-		}
-		transform.blit(BG_LOCATION, this.leftPos + 160, this.topPos + 6, 216, 0, 10, 10);
-		int countPulse = this.menu.pulseDivider.get(PulseDividerBlockEntity.DATA_COUNT_PULSE);
-		if(countPulse == 0) {
-			transform.blit(BG_LOCATION, this.leftPos + 176, this.topPos + 6, 216, 0, 10, 10);
 		}
 	}
 
