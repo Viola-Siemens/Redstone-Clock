@@ -1,6 +1,5 @@
 package com.hexagram2021.redstoneclock.client.screen;
 
-import com.hexagram2021.redstoneclock.common.block.PulseDividerBlock;
 import com.hexagram2021.redstoneclock.common.block.entity.PulseDividerBlockEntity;
 import com.hexagram2021.redstoneclock.common.menu.PulseDividerMenu;
 import net.minecraft.client.Minecraft;
@@ -12,7 +11,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.Objects;
 
