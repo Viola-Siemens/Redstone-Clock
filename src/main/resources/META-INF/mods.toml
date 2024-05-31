@@ -11,7 +11,7 @@ logoFile="logo.png"
 credits="Liu Dongyu, Blue_rose"
 authors="Hexagram"
 description='''
-A lightweight Minecraft mod that adds a simple redstone clock.
+A lightweight Minecraft mod that adds a simple redstone clock and a simple pulse divider.
 '''
 
 [[dependencies.redstoneclock]]
